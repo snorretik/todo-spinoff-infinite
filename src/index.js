@@ -462,6 +462,9 @@ function initializeFunc() {
 
         }
 
+        window.localStorage.clear()
+        window.localStorage.setItem('save', JSON.stringify(verzameling));
+
         showListOne(verzameling);
         addAllButtonEvents();
     }
