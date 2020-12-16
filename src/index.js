@@ -91,7 +91,7 @@ function initializeFunc() {
 
         const toAddToDo = new Todo({ title, dueDate, description, proName, priority, checked });
 
-        console.log(toAddToDo);
+        // console.log(toAddToDo);
 
         addData(verzameling, values[3]);
 
