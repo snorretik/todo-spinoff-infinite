@@ -62,7 +62,7 @@ function rebuildingFunc(verzamelingTemp) {
                 let checked = verzamelingTemp[key][i].checked;
                 
 
-                console.log(checked);
+                // console.log(checked);
 
                 const addingVar = new Todo({ title, dueDate, description, proName, priority, checked });
 
@@ -436,7 +436,7 @@ function initializeFunc() {
                         }
 
                         extraBool = false;
-                        
+
                     } else {
                         verzameling[proNameVal][i].editSwitch();
                         // verzameling[proNameVal][i].expandedSwitch();
