@@ -28,7 +28,7 @@ function showListOne(verzameling) {
                 showListExpanded(i);
                 numberExp += 1;
             } else {
-                console.log("expanded is false... dus...");
+                // console.log("expanded is false... dus...");
                 // zou false moeten zijn
             }
         } else {
@@ -40,7 +40,7 @@ function showListOne(verzameling) {
 
     function showListBasics(i) {
 
-        console.log(`${i + 1 + numberExp}, bij showlistbasics`);
+        // console.log(`${i + 1 + numberExp}, bij showlistbasics`);
 
         listDisplay.style.cssText = `grid-template-rows: repeat(${i + 1 + numberExp}, 22px)`;
         

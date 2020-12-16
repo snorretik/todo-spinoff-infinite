@@ -3,7 +3,7 @@ function addData(verzameling, proName) {
         verzameling[proName] = [];
         makeProjectSelector(proName);
     } else {
-        console.log(`${proName}`);
+        // console.log(`${proName}`);
     }
 }
 

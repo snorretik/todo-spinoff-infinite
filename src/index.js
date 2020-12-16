@@ -8,13 +8,13 @@ let verzameling = { main: [], };
 // var database = firebase.database();
 
 
-function Todo({title, dueDate, description, proName, priority}) {
+function Todo({title, dueDate, description, proName, priority, checked }) {
     this.title = title;
     this.dueDate = dueDate;
     this.description = description;
     this.proName = proName;
     this.priority = priority;
-    this.checked = false;
+    this.checked = checked;
     this.expanded = false;
     this.edit = false;
 }
@@ -59,10 +59,12 @@ function rebuildingFunc(verzamelingTemp) {
                 let description = verzamelingTemp[key][i].description;
                 let proName = verzamelingTemp[key][i].proName;
                 let priority = verzamelingTemp[key][i].priority;
+                let checked = verzamelingTemp[key][i].checked;
+                
 
-                console.log(title);
+                console.log(checked);
 
-                const addingVar = new Todo({ title, dueDate, description, proName, priority });
+                const addingVar = new Todo({ title, dueDate, description, proName, priority, checked });
 
                 addData(verzameling, proName);
 
@@ -85,8 +87,9 @@ function initializeFunc() {
         let description = values[2];
         let proName = values[3];
         let priority = values[4];
+        let checked = false;
 
-        const toAddToDo = new Todo({ title, dueDate, description, proName, priority });
+        const toAddToDo = new Todo({ title, dueDate, description, proName, priority, checked });
 
         console.log(toAddToDo);
 
@@ -175,6 +178,7 @@ function initializeFunc() {
         addButton4Events();
         addButton5Events();
         addButton6Events();
+        // addButton7Events();
     }
 
     function addButton1Events() {
@@ -188,7 +192,7 @@ function initializeFunc() {
 
         for (let i = 0; i < verzameling[proNameVal].length; i++) {
             if (verzameling[proNameVal][i].edit == false) {
-                console.log(`${i + 1 + numberExpIndex}, bij addbutton1events`);
+                // console.log(`${i + 1 + numberExpIndex}, bij addbutton1events`);
                 let button = document.querySelector(`#expandNo${i + 1 + numberExpIndex}`);
 
                 button.addEventListener('click', (e) => {
@@ -222,6 +226,10 @@ function initializeFunc() {
                 
                 button.addEventListener('click', (e) => {
                     verzameling[proNameVal][i].prioritySwitch();
+
+                    window.localStorage.clear()
+                    window.localStorage.setItem('save', JSON.stringify(verzameling));
+
                     showListOne(verzameling);
                     addAllButtonEvents();
                 });
@@ -272,6 +280,9 @@ function initializeFunc() {
                     //     });
                     // }
 
+                    window.localStorage.clear()
+                    window.localStorage.setItem('save', JSON.stringify(verzameling));
+
                     showListOne(verzameling);
                     addAllButtonEvents();
                 });
@@ -311,8 +322,25 @@ function initializeFunc() {
         }
     }
 
+    // function addButton7Events() {
+    //     let proNameEl = document.querySelector("#proSelect");
+    //     let proNameVal = proNameEl.value;
+
+    //     let numberExpIndex = 0;
+
+    //     for (let i = 0; i < verzameling[proNameVal].length; i++) {
+    //         if (verzameling[proNameVal][i].edit == false) {
+    //             let button = document.querySelector(`#editButtonNo${i + 2 + numberExpIndex}`);
+
+    //             button.addEventListener('click', (e) => {
+    //                 verzameling[proNameVal][i]
+    //             })
+    //         }
+    //     }
+    // }
+
     function addButton5Events() {
-        // priority knop bij edit
+        // edit knop
         // moet + 2
         // let buttons = Array.from(document.querySelectorAll(".editPriorityDis"));
         
@@ -322,18 +350,29 @@ function initializeFunc() {
         let numberExpIndex = 0;
 
         for (let i = 0; i < verzameling[proNameVal].length; i++) {
-            if ((verzameling[proNameVal][i].edit == false) && (verzameling[proNameVal][i].expandedVal == true)) {
+            if ((verzameling[proNameVal][i].edit == false) && (verzameling[proNameVal][i].expanded == true)) {
                 let button = document.querySelector(`#editButtonNo${i + 2 + numberExpIndex}`);
-                
+
+                // console.log(`${button} is button`);
+
                 button.addEventListener('click', (e) => {
                     verzameling[proNameVal][i].editSwitch();
+
+                    // console.log(`${verzameling[proNameVal][i].edit} is edit`)
+
+                    // window.localStorage.clear()
+                    // window.localStorage.setItem('save', JSON.stringify(verzameling));
+
+                    window.localStorage.clear()
+                    window.localStorage.setItem('save', JSON.stringify(verzameling));
+
                     showListOne(verzameling);
                     addAllButtonEvents();
                 });
 
                 numberExpIndex += 1;
 
-            } else if ((verzameling[proNameVal][i].edit == true) && (verzameling[proNameVal][i].expandedVal == true)) {
+            } else if ((verzameling[proNameVal][i].edit == true) && (verzameling[proNameVal][i].expanded == true)) {
                 numberExpIndex += 1;
             }
             // expandedVal nog en editVal
@@ -375,13 +414,13 @@ function initializeFunc() {
 
                     // let dueDateAr = inputDueEl.value; 
 
-                    verzameling[proNameVal][i].titleChange(inputTitleEl.value);
-                    verzameling[proNameVal][i].dueDateChange(inputDueEl.value);
-                    verzameling[proNameVal][i].descripChange(inputDescripEl.value);
+                    verzameling[proNameVal][i].title = inputTitleEl.value;
+                    verzameling[proNameVal][i].dueDate = inputDueEl.value;
+                    verzameling[proNameVal][i].description = inputDescripEl.value;
                     // verzameling[proNameVal][i].proNameChange = inputProNameEl.value;
 
                     if (verzameling[proNameVal][i].proNameVal != inputProNameEl.value) {
-                        verzameling[proNameVal][i].proNameChange(inputProNameEl.value);
+                        verzameling[proNameVal][i].proName = inputProNameEl.value;
 
                         verzameling[proNameVal][i].editSwitch();
                         verzameling[proNameVal][i].expandedSwitch();
@@ -392,14 +431,18 @@ function initializeFunc() {
 
                         arrayRemove.push(i);
 
-                        if (extraBool = true) {
+                        if (extraBool == true) {
                             removePesty(arrayRemove);
                         }
 
                         extraBool = false;
+                        
                     } else {
                         verzameling[proNameVal][i].editSwitch();
                         // verzameling[proNameVal][i].expandedSwitch();
+
+                        window.localStorage.clear()
+                        window.localStorage.setItem('save', JSON.stringify(verzameling));
 
                         showListOne(verzameling);
                         addAllButtonEvents();
@@ -413,7 +456,7 @@ function initializeFunc() {
                 
             } else if (verzameling[proNameVal][i].expanded == true) {
                 numberExpIndex += 1;
-                console.log("test")
+                // console.log("test")
             }
 
             // console.log(`${verzameling[proNameVal].length} is length`);
